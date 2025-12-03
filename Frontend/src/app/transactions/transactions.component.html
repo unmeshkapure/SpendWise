@@ -75,7 +75,7 @@
                 </div>
                 <div class="t-right">
                     <span class="t-amount" [class.positive]="t.type === 'income'">
-                        {{ t.type === 'income' ? '+' : '-' }}{{ t.amount | currency }}
+                        {{ t.type === 'income' ? '+' : '-' }}{{ t.amount | currency:'INR' }}
                     </span>
                     <button class="btn-icon delete-btn" (click)="deleteTransaction(t.id)">🗑️</button>
                 </div>

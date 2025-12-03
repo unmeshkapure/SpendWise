@@ -15,6 +15,7 @@ export interface AuthResponse {
     access_token: string;
     token_type: string;
     user: User;
+    username?: string;
 }
 
 @Injectable({
@@ -34,17 +35,21 @@ export class AuthService {
         if (token) {
             try {
                 const decoded: any = jwtDecode(token);
-                // Check if token is expired
                 if (decoded.exp * 1000 < Date.now()) {
                     this.logout();
                     return;
                 }
-                // Ideally we would get the user details from the token or a separate API call
-                // For now, we'll assume the token is valid and we might need to fetch user profile
-                // But the login response gives us the user, so let's try to persist that or fetch it.
-                // Since we don't have a "me" endpoint in the analysis, let's rely on what we have.
-                // Actually, let's just decode the sub (username) and store it.
-                this.currentUserSubject.next({ username: decoded.sub } as User);
+
+                // Fetch full user profile to ensure we have the username
+                this.http.get<User>(`${this.apiUrl}/me`).subscribe({
+                    next: (user) => {
+                        this.currentUserSubject.next(user);
+                    },
+                    error: () => {
+                        // Fallback to token data if API fails
+                        this.currentUserSubject.next({ username: decoded.username || decoded.sub } as User);
+                    }
+                });
             } catch (error) {
                 this.logout();
             }
@@ -63,7 +68,7 @@ export class AuthService {
                 // We might need to fetch the user details separately or decode the token.
                 // Let's decode for now.
                 const decoded: any = jwtDecode(response.access_token);
-                this.currentUserSubject.next({ username: decoded.sub } as User);
+                this.currentUserSubject.next({ username: decoded.username || response.username } as User);
             })
         );
     }

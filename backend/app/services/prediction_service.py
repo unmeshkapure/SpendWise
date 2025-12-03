@@ -56,6 +56,13 @@ class PredictionService:
             current_month = datetime.now().month
             current_year = datetime.now().year
             
+            # Auto-train if not trained
+            if not self.predictor.is_trained:
+                try:
+                    self.train_model_for_user(user_id)
+                except Exception as e:
+                    print(f"Auto-training failed (expected for new users): {e}")
+            
             current_month_transactions = self.db.query(Transaction).filter(
                 Transaction.user_id == user_id,
                 Transaction.type == "expense",

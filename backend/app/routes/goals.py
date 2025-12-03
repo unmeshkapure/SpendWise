@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, date
 from typing import List
 
 from ..config.database import get_db
@@ -32,7 +32,7 @@ def create_savings_goal(
     
     # Calculate derived properties
     progress_percentage = min(100, (goal.current_amount / goal.target_amount) * 100) if goal.target_amount > 0 else 0
-    days_remaining = (goal.target_date - datetime.now()).days if goal.target_date > datetime.now() else 0
+    days_remaining = (goal.target_date - date.today()).days if goal.target_date > date.today() else 0
     
     return SavingsGoalResponse(
         id=goal.id,
@@ -61,7 +61,7 @@ def get_savings_goals(
     result = []
     for goal in goals:
         progress_percentage = min(100, (goal.current_amount / goal.target_amount) * 100) if goal.target_amount > 0 else 0
-        days_remaining = (goal.target_date - datetime.now()).days if goal.target_date > datetime.now() else 0
+        days_remaining = (goal.target_date - date.today()).days if goal.target_date > date.today() else 0
         
         result.append(SavingsGoalResponse(
             id=goal.id,
@@ -98,7 +98,7 @@ def get_savings_goal(
         )
     
     progress_percentage = min(100, (goal.current_amount / goal.target_amount) * 100) if goal.target_amount > 0 else 0
-    days_remaining = (goal.target_date - datetime.now()).days if goal.target_date > datetime.now() else 0
+    days_remaining = (goal.target_date - date.today()).days if goal.target_date > date.today() else 0
     
     return SavingsGoalResponse(
         id=goal.id,
@@ -147,7 +147,7 @@ def update_savings_goal(
     db.refresh(goal)
     
     progress_percentage = min(100, (goal.current_amount / goal.target_amount) * 100) if goal.target_amount > 0 else 0
-    days_remaining = (goal.target_date - datetime.now()).days if goal.target_date > datetime.now() else 0
+    days_remaining = (goal.target_date - date.today()).days if goal.target_date > date.today() else 0
     
     return SavingsGoalResponse(
         id=goal.id,
@@ -227,7 +227,7 @@ def add_amount_to_goal(
     db.refresh(goal)
     
     progress_percentage = min(100, (goal.current_amount / goal.target_amount) * 100) if goal.target_amount > 0 else 0
-    days_remaining = (goal.target_date - datetime.now()).days if goal.target_date > datetime.now() else 0
+    days_remaining = (goal.target_date - date.today()).days if goal.target_date > date.today() else 0
     
     return SavingsGoalResponse(
         id=goal.id,

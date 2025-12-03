@@ -18,6 +18,14 @@ def get_budget_prediction(
 ):
     """Get budget prediction for next month"""
     service = PredictionService(db)
+    
+    # Auto-train if not trained
+    if not service.predictor.is_trained:
+        try:
+            service.train_model_for_user(current_user.id)
+        except Exception as e:
+            print(f"Auto-training failed (expected for new users): {e}")
+            
     prediction = service.predict_next_month_budget(current_user.id)
     return prediction
 
@@ -51,6 +59,13 @@ def get_forecast(
     """Get forecast for next few months"""
     service = PredictionService(db)
     
+    # Auto-train if not trained
+    if not service.predictor.is_trained:
+        try:
+            service.train_model_for_user(current_user.id)
+        except Exception as e:
+            print(f"Auto-training failed (expected for new users): {e}")
+    
     print("DEBUG: Starting forecast")
     forecasts = []
     for i in range(1, months_ahead + 1):
@@ -71,7 +86,7 @@ def get_forecast(
                 Transaction.user_id == current_user.id,
                 Transaction.type == "expense",
                 Transaction.date >= datetime(current_date.year, current_date.month, 1),
-                Transaction.date < datetime(current_date.year, current_date.month + 1, 1) if current_date.month < 12 else datetime(current_date.year + 1, 1, 1),
+                Transaction.date < (datetime(current_date.year, current_date.month + 1, 1) if current_date.month < 12 else datetime(current_date.year + 1, 1, 1)),
                 Transaction.is_active == True
             ).all()
             print(f"DEBUG: Found {len(current_month_transactions)} transactions")

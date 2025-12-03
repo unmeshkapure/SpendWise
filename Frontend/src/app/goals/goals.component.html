@@ -15,8 +15,8 @@
         <h3>Create New Goal</h3>
         <form [formGroup]="goalForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
-                <label for="name">Goal Name</label>
-                <input id="name" type="text" formControlName="name" placeholder="e.g., New Car, Vacation">
+                <label for="title">Goal Name</label>
+                <input id="title" type="text" formControlName="title" placeholder="e.g., New Car, Vacation">
             </div>
 
             <div class="form-row">
@@ -32,8 +32,8 @@
             </div>
 
             <div class="form-group">
-                <label for="deadline">Target Date</label>
-                <input id="deadline" type="date" formControlName="deadline">
+                <label for="target_date">Target Date</label>
+                <input id="target_date" type="date" formControlName="target_date">
             </div>
 
             <button type="submit" class="btn btn-primary w-100" [disabled]="goalForm.invalid || isLoading">
@@ -50,7 +50,7 @@
 
         <div *ngFor="let goal of goals" class="card goal-card">
             <div class="goal-header">
-                <h3>{{ goal.name }}</h3>
+                <h3>{{ goal.title }}</h3>
                 <div class="actions">
                     <button class="btn-icon add-btn" (click)="openAddAmount(goal.id)" title="Add Money">+</button>
                     <button class="btn-icon delete-btn" (click)="deleteGoal(goal.id)" title="Delete">🗑️</button>
@@ -58,14 +58,14 @@
             </div>
 
             <div class="goal-amounts">
-                <span class="current">{{ goal.current_amount | currency }}</span>
-                <span class="target">of {{ goal.target_amount | currency }}</span>
+                <span class="current">{{ goal.current_amount | currency:'INR' }}</span>
+                <span class="target">of {{ goal.target_amount | currency:'INR' }}</span>
             </div>
 
             <div class="progress-container">
                 <div class="progress-bar" [style.width.%]="getProgress(goal)"></div>
             </div>
-            <p class="days-left" *ngIf="goal.deadline">Target: {{ goal.deadline | date }}</p>
+            <p class="days-left" *ngIf="goal.target_date">Target: {{ goal.target_date | date }}</p>
 
             <!-- Add Money Input (Inline) -->
             <div class="add-money-form" *ngIf="addingToGoalId === goal.id">

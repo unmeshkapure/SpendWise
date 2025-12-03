@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PredictionService, Forecast } from './prediction.service';
 
@@ -14,7 +14,10 @@ export class PredictionsComponent implements OnInit {
     nextMonthBudget: number = 0;
     isLoading: boolean = false;
 
-    constructor(private predictionService: PredictionService) { }
+    constructor(
+        private predictionService: PredictionService,
+        private cdr: ChangeDetectorRef
+    ) { }
 
     ngOnInit(): void {
         this.loadPredictions();
@@ -31,10 +34,12 @@ export class PredictionsComponent implements OnInit {
                     this.nextMonthBudget = data[0].predicted_budget;
                 }
                 this.isLoading = false;
+                this.cdr.detectChanges();
             },
             error: (err) => {
                 console.error('Error loading predictions', err);
                 this.isLoading = false;
+                this.cdr.detectChanges();
             }
         });
     }

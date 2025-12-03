@@ -8,7 +8,7 @@
         <div class="highlight-content">
             <h3>Next Month's Predicted Budget</h3>
             <div class="highlight-amount" *ngIf="!isLoading; else loadingAmount">
-                {{ nextMonthBudget | currency }}
+                {{ nextMonthBudget | currency:'INR' }}
             </div>
             <ng-template #loadingAmount>
                 <div class="skeleton-text"></div>

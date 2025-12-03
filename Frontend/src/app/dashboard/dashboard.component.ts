@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 
@@ -20,18 +20,25 @@ export class DashboardComponent implements OnInit {
     recentTransactions: any[] = [];
     isLoading = true;
 
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient,
+        private cdr: ChangeDetectorRef
+    ) { }
 
     ngOnInit(): void {
         this.fetchDashboardData();
     }
 
+    trends: any[] = [];
+
     fetchDashboardData(): void {
         this.isLoading = true;
+
+        // Fetch Summary
         this.http.get<any>('/api/v1/dashboard/summary').subscribe({
             next: (data) => {
                 this.summary = {
-                    totalBalance: data.summary.current_month_net, // Using net as balance for now
+                    totalBalance: data.summary.current_month_net,
                     monthlyIncome: data.summary.current_month_income,
                     monthlyExpense: data.summary.current_month_expense,
                     savingsRate: data.summary.current_month_income > 0
@@ -39,12 +46,34 @@ export class DashboardComponent implements OnInit {
                         : 0
                 };
                 this.recentTransactions = data.recent_transactions;
-                this.isLoading = false;
+                this.checkLoading();
             },
             error: (error) => {
                 console.error('Error fetching dashboard data:', error);
-                this.isLoading = false;
+                this.checkLoading();
             }
         });
+
+        // Fetch Trends
+        this.http.get<any[]>('/api/v1/dashboard/trends').subscribe({
+            next: (data) => {
+                this.trends = data;
+                this.checkLoading();
+            },
+            error: (error) => {
+                console.error('Error fetching trends:', error);
+                this.checkLoading();
+            }
+        });
+    }
+
+    private loadingCount = 0;
+    private checkLoading() {
+        this.loadingCount++;
+        if (this.loadingCount >= 2) {
+            this.isLoading = false;
+            this.cdr.detectChanges();
+            this.loadingCount = 0;
+        }
     }
 }

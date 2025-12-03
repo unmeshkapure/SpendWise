@@ -4,11 +4,13 @@ import { Observable } from 'rxjs';
 
 export interface Goal {
     id?: number;
-    name: string;
+    title: string;
     target_amount: number;
     current_amount: number;
-    deadline: string;
+    target_date: string;
     is_completed?: boolean;
+    is_locked?: boolean;
+    description?: string;
 }
 
 @Injectable({

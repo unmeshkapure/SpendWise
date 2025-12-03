@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { GoalService, Goal } from './goal.service';
@@ -18,13 +18,14 @@ export class GoalsComponent implements OnInit {
 
     constructor(
         private goalService: GoalService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private cdr: ChangeDetectorRef
     ) {
         this.goalForm = this.fb.group({
-            name: ['', Validators.required],
+            title: ['', Validators.required],
             target_amount: ['', [Validators.required, Validators.min(1)]],
             current_amount: [0, [Validators.required, Validators.min(0)]],
-            deadline: ['', Validators.required]
+            target_date: ['', Validators.required]
         });
     }
 
@@ -38,10 +39,12 @@ export class GoalsComponent implements OnInit {
             next: (data) => {
                 this.goals = data;
                 this.isLoading = false;
+                this.cdr.detectChanges();
             },
             error: (err) => {
                 console.error('Error loading goals', err);
                 this.isLoading = false;
+                this.cdr.detectChanges();
             }
         });
     }
@@ -77,7 +80,10 @@ export class GoalsComponent implements OnInit {
                 next: () => {
                     this.goals = this.goals.filter(g => g.id !== id);
                 },
-                error: (err) => console.error(err)
+                error: (err) => {
+                    console.error(err);
+                    alert(err.error.detail || 'Failed to delete goal');
+                }
             });
         }
     }

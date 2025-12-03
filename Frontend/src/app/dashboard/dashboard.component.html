@@ -7,7 +7,7 @@
             </div>
             <div class="card-content">
                 <h3>Total Balance</h3>
-                <p class="amount">{{ summary.totalBalance | currency }}</p>
+                <p class="amount">{{ summary.totalBalance | currency:'INR' }}</p>
                 <span class="trend positive">
                     <i class="fa-solid fa-arrow-trend-up"></i> +12% from last month
                 </span>
@@ -20,7 +20,7 @@
             </div>
             <div class="card-content">
                 <h3>Monthly Income</h3>
-                <p class="amount">{{ summary.monthlyIncome | currency }}</p>
+                <p class="amount">{{ summary.monthlyIncome | currency:'INR' }}</p>
             </div>
         </div>
 
@@ -30,7 +30,7 @@
             </div>
             <div class="card-content">
                 <h3>Monthly Expenses</h3>
-                <p class="amount">{{ summary.monthlyExpense | currency }}</p>
+                <p class="amount">{{ summary.monthlyExpense | currency:'INR' }}</p>
             </div>
         </div>
 
@@ -61,37 +61,18 @@
                     </select>
                 </div>
             </div>
-            <div class="chart-placeholder">
-                <!-- Simulated Chart Bars -->
-                <div class="chart-bar-group">
-                    <div class="bar" style="height: 60%"></div>
-                    <span class="label">Mon</span>
-                </div>
-                <div class="chart-bar-group">
-                    <div class="bar" style="height: 80%"></div>
-                    <span class="label">Tue</span>
-                </div>
-                <div class="chart-bar-group">
-                    <div class="bar" style="height: 40%"></div>
-                    <span class="label">Wed</span>
-                </div>
-                <div class="chart-bar-group">
-                    <div class="bar active" style="height: 90%"></div>
-                    <span class="label">Thu</span>
-                </div>
-                <div class="chart-bar-group">
-                    <div class="bar" style="height: 50%"></div>
-                    <span class="label">Fri</span>
-                </div>
-                <div class="chart-bar-group">
-                    <div class="bar" style="height: 70%"></div>
-                    <span class="label">Sat</span>
-                </div>
-                <div class="chart-bar-group">
-                    <div class="bar" style="height: 45%"></div>
-                    <span class="label">Sun</span>
+            <div class="chart-placeholder" *ngIf="trends.length > 0; else noTrends">
+                <div class="chart-bar-group" *ngFor="let t of trends">
+                    <div class="bar" [style.height.%]="(t.total_expense / 50000) * 100"
+                        [title]="t.month_name + ': ' + (t.total_expense | currency:'INR')"></div>
+                    <span class="label">{{ t.month_name | slice:0:3 }}</span>
                 </div>
             </div>
+            <ng-template #noTrends>
+                <div class="no-data">
+                    <p>No spending data available yet.</p>
+                </div>
+            </ng-template>
         </div>
 
         <div class="card transactions-section">
@@ -112,7 +93,7 @@
                         <span class="t-cat">{{ t.category }}</span>
                     </div>
                     <div class="t-amount" [class.positive]="t.type === 'income'">
-                        {{ t.type === 'income' ? '+' : '-' }}{{ t.amount | currency }}
+                        {{ t.type === 'income' ? '+' : '-' }}{{ t.amount | currency:'INR' }}
                     </div>
                 </div>
             </div>

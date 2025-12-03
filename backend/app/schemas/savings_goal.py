@@ -1,11 +1,11 @@
 from pydantic import BaseModel, field_validator
-from datetime import datetime
+from datetime import date
 from typing import Optional
 
 class SavingsGoalBase(BaseModel):
     title: str
     target_amount: float
-    target_date: datetime
+    target_date: date
     description: Optional[str] = None
 
 class SavingsGoalCreate(SavingsGoalBase):
@@ -17,15 +17,15 @@ class SavingsGoalCreate(SavingsGoalBase):
     
     @field_validator('target_date')
     def validate_target_date(cls, v):
-        from datetime import datetime
-        if v <= datetime.now():
+        from datetime import date
+        if v <= date.today():
             raise ValueError('Target date must be in the future')
         return v
 
 class SavingsGoalUpdate(BaseModel):
     title: Optional[str] = None
     target_amount: Optional[float] = None
-    target_date: Optional[datetime] = None
+    target_date: Optional[date] = None
     description: Optional[str] = None
 
 class SavingsGoalInDB(SavingsGoalBase):
@@ -34,8 +34,8 @@ class SavingsGoalInDB(SavingsGoalBase):
     current_amount: float
     is_locked: bool
     is_completed: bool
-    created_at: datetime
-    unlocked_at: Optional[datetime] = None
+    created_at: date
+    unlocked_at: Optional[date] = None
     
     class Config:
         from_attributes = True
@@ -45,7 +45,7 @@ class SavingsGoalResponse(BaseModel):
     title: str
     target_amount: float
     current_amount: float
-    target_date: datetime
+    target_date: date
     is_locked: bool
     is_completed: bool
     progress_percentage: float

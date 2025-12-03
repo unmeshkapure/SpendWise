@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TransactionService, Transaction } from './transaction.service';
@@ -19,7 +19,8 @@ export class TransactionsComponent implements OnInit {
 
     constructor(
         private transactionService: TransactionService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private cdr: ChangeDetectorRef
     ) {
         this.transactionForm = this.fb.group({
             amount: ['', [Validators.required, Validators.min(0.01)]],
@@ -40,10 +41,12 @@ export class TransactionsComponent implements OnInit {
             next: (data) => {
                 this.transactions = data;
                 this.isLoading = false;
+                this.cdr.detectChanges();
             },
             error: (err) => {
                 console.error('Error loading transactions', err);
                 this.isLoading = false;
+                this.cdr.detectChanges();
             }
         });
     }

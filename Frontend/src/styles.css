@@ -221,3 +221,8 @@ body.light-theme {
   --glass-border: rgba(0, 0, 0, 0.1);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
 }
+
+/* Fix for Dark Mode Numbers */
+.amount, .t-amount, .current, .target, .highlight-amount { color: var(--text-primary) !important; }
+.t-amount.positive, .trend.positive { color: #10b981 !important; }
+.t-amount.negative, .trend.negative { color: #ef4444 !important; }

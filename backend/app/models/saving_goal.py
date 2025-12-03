@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, Date, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from ..config.database import Base
@@ -13,7 +13,7 @@ class SavingsGoal(Base):
     title = Column(String, nullable=False)
     target_amount = Column(Float, nullable=False)
     current_amount = Column(Float, default=0.0)
-    target_date = Column(DateTime, nullable=False)
+    target_date = Column(Date, nullable=False)
     is_locked = Column(Boolean, default=True)  # Cannot withdraw until unlocked
     is_completed = Column(Boolean, default=False)
     description = Column(String)
@@ -34,10 +34,10 @@ class SavingsGoal(Base):
     
     @property
     def days_remaining(self):
-        from datetime import datetime
-        if self.is_completed or self.target_date < datetime.now():
+        from datetime import date
+        if self.is_completed or self.target_date < date.today():
             return 0
-        return (self.target_date - datetime.now()).days
+        return (self.target_date - date.today()).days
 
 # Add relationship to User model
 def add_user_relationship():

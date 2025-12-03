@@ -20,7 +20,7 @@
 .highlight-amount {
     font-size: 3rem;
     font-weight: 700;
-    color: var(--text-main);
+    color: var(--text-primary);
     margin: var(--spacing-sm) 0;
     text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
 }

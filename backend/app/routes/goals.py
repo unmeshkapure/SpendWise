@@ -206,13 +206,17 @@ def add_amount_to_goal(
     ).first()
     
     if not goal:
-    
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Savings goal not found"
+        )
+
     if amount <= 0:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Amount must be positive"
         )
-    
+
     goal.current_amount += amount
     
     if goal.current_amount >= goal.target_amount:

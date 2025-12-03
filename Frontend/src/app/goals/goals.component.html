@@ -51,7 +51,10 @@
         <div *ngFor="let goal of goals" class="card goal-card">
             <div class="goal-header">
                 <h3>{{ goal.name }}</h3>
-                <button class="btn-icon delete-btn" (click)="deleteGoal(goal.id)">🗑️</button>
+                <div class="actions">
+                    <button class="btn-icon add-btn" (click)="openAddAmount(goal.id)" title="Add Money">+</button>
+                    <button class="btn-icon delete-btn" (click)="deleteGoal(goal.id)" title="Delete">🗑️</button>
+                </div>
             </div>
 
             <div class="goal-amounts">
@@ -59,8 +62,23 @@
                 <span class="target">of {{ goal.target_amount | currency }}</span>
             </div>
 
-            <div class="progress-bar-container">
-                <p>Loading goals...</p>
+            <div class="progress-container">
+                <div class="progress-bar" [style.width.%]="getProgress(goal)"></div>
             </div>
-            </ng-template>
+            <p class="days-left" *ngIf="goal.deadline">Target: {{ goal.deadline | date }}</p>
+
+            <!-- Add Money Input (Inline) -->
+            <div class="add-money-form" *ngIf="addingToGoalId === goal.id">
+                <input type="number" [(ngModel)]="amountToAdd" placeholder="Amount" min="1">
+                <button class="btn btn-sm btn-primary" (click)="submitAddAmount()">Save</button>
+                <button class="btn btn-sm btn-secondary" (click)="cancelAddAmount()">Cancel</button>
+            </div>
         </div>
+    </div>
+
+    <ng-template #loading>
+        <div class="progress-bar-container">
+            <p>Loading goals...</p>
+        </div>
+    </ng-template>
+</div>

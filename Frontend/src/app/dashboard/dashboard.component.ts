@@ -10,28 +10,41 @@ import { HttpClient } from '@angular/common/http';
     styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
-    // Mock data for now, will replace with API calls
     summary = {
-        totalBalance: 12500.50,
-        monthlyIncome: 4500.00,
-        monthlyExpense: 2300.25,
-        savingsRate: 48
+        totalBalance: 0,
+        monthlyIncome: 0,
+        monthlyExpense: 0,
+        savingsRate: 0
     };
 
-    recentTransactions = [
-        { id: 1, description: 'Grocery Store', amount: -150.00, date: new Date(), category: 'Food', type: 'expense' },
-        { id: 2, description: 'Salary Deposit', amount: 4500.00, date: new Date(), category: 'Income', type: 'income' },
-        { id: 3, description: 'Netflix Subscription', amount: -15.99, date: new Date(), category: 'Entertainment', type: 'expense' },
-        { id: 4, description: 'Electric Bill', amount: -120.50, date: new Date(), category: 'Utilities', type: 'expense' }
-    ];
+    recentTransactions: any[] = [];
+    isLoading = true;
 
     constructor(private http: HttpClient) { }
 
     ngOnInit(): void {
-        // this.fetchDashboardData();
+        this.fetchDashboardData();
     }
 
     fetchDashboardData(): void {
-        // this.http.get('/api/v1/dashboard/summary').subscribe(...)
+        this.isLoading = true;
+        this.http.get<any>('/api/v1/dashboard/summary').subscribe({
+            next: (data) => {
+                this.summary = {
+                    totalBalance: data.summary.current_month_net, // Using net as balance for now
+                    monthlyIncome: data.summary.current_month_income,
+                    monthlyExpense: data.summary.current_month_expense,
+                    savingsRate: data.summary.current_month_income > 0
+                        ? Math.round(((data.summary.current_month_income - data.summary.current_month_expense) / data.summary.current_month_income) * 100)
+                        : 0
+                };
+                this.recentTransactions = data.recent_transactions;
+                this.isLoading = false;
+            },
+            error: (error) => {
+                console.error('Error fetching dashboard data:', error);
+                this.isLoading = false;
+            }
+        });
     }
 }

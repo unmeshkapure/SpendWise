@@ -18,3 +18,7 @@ backend/tests/__pycache__
 .gemini
 .DS_Store
 .vscode
+
+# Secrets and Large Files
+backend/app/config/
+Antigravity/

@@ -1,4 +1,10 @@
 /* Global Styles - Premium Finance Theme */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   /* Core Colors */
   --primary: #0ea5e9;
@@ -203,4 +209,15 @@ input::placeholder {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+body.light-theme {
+  --bg-main: #f8fafc;
+  --bg-sidebar: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --bg-input: rgba(241, 245, 249, 0.8);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
 }

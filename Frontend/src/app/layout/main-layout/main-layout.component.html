@@ -1,0 +1,70 @@
+<div class="layout-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+            <h1>SpendWise</h1>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+                <span class="icon"><i class="fa-solid fa-chart-pie"></i></span>
+                <span>Dashboard</span>
+            </a>
+            <a routerLink="/transactions" routerLinkActive="active" class="nav-item">
+                <span class="icon"><i class="fa-solid fa-money-bill-transfer"></i></span>
+                <span>Transactions</span>
+            </a>
+            <a routerLink="/goals" routerLinkActive="active" class="nav-item">
+                <span class="icon"><i class="fa-solid fa-bullseye"></i></span>
+                <span>Goals</span>
+            </a>
+            <a routerLink="/predictions" routerLinkActive="active" class="nav-item">
+                <span class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                <span>Predictions</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button (click)="authService.logout()" class="nav-item logout-btn">
+                <span class="icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <header class="top-header">
+            <div class="header-title">
+                <h2>Overview</h2>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" (click)="toggleTheme()"
+                    [title]="themeService.isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+                    <i class="fa-solid" [class.fa-sun]="themeService.isDarkMode()"
+                        [class.fa-moon]="!themeService.isDarkMode()"></i>
+                </button>
+                <button class="icon-btn">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <div class="avatar">
+                        {{ (authService.currentUser$ | async)?.username?.charAt(0)?.toUpperCase() || 'U' }}
+                    </div>
+                    <div class="user-info">
+                        <span class="username">{{ (authService.currentUser$ | async)?.username || 'User' }}</span>
+                        <span class="role">Premium Member</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="content-area">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

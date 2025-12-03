@@ -1,0 +1,45 @@
+<div class="predictions-container fade-in">
+    <div class="header-section">
+        <h2>Budget Predictions</h2>
+        <p>AI-powered insights into your future spending</p>
+    </div>
+
+    <div class="prediction-highlight card">
+        <div class="highlight-content">
+            <h3>Next Month's Predicted Budget</h3>
+            <div class="highlight-amount" *ngIf="!isLoading; else loadingAmount">
+                {{ nextMonthBudget | currency }}
+            </div>
+            <ng-template #loadingAmount>
+                <div class="skeleton-text"></div>
+            </ng-template>
+            <p class="highlight-desc">Based on your recent spending habits and recurring expenses.</p>
+        </div>
+        <div class="highlight-icon">🔮</div>
+    </div>
+
+    <div class="forecast-section">
+        <h3>6-Month Forecast</h3>
+        <div class="forecast-grid" *ngIf="!isLoading; else loadingGrid">
+            <div *ngFor="let f of forecasts" class="card forecast-card">
+                <div class="forecast-header">
+                    <span class="month">{{ f.month_name }}</span>
+                    <span class="year">{{ f.year }}</span>
+                </div>
+                <div class="forecast-body">
+                    <span class="label">Predicted</span>
+                    <span class="amount">{{ f.predicted_budget | currency }}</span>
+                </div>
+                <div class="forecast-bar">
+                    <div class="bar-fill" [style.width.%]="(f.predicted_budget / 5000) * 100"></div>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #loadingGrid>
+            <div class="loading-state">
+                <p>Analyzing spending patterns...</p>
+            </div>
+        </ng-template>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+<div class="dashboard-container fade-in">
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+        <div class="card summary-card balance">
+            <div class="card-icon">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+            <div class="card-content">
+                <h3>Total Balance</h3>
+                <p class="amount">{{ summary.totalBalance | currency }}</p>
+                <span class="trend positive">
+                    <i class="fa-solid fa-arrow-trend-up"></i> +12% from last month
+                </span>
+            </div>
+        </div>
+
+        <div class="card summary-card income">
+            <div class="card-icon">
+                <i class="fa-solid fa-arrow-down"></i>
+            </div>
+            <div class="card-content">
+                <h3>Monthly Income</h3>
+                <p class="amount">{{ summary.monthlyIncome | currency }}</p>
+            </div>
+        </div>
+
+        <div class="card summary-card expense">
+            <div class="card-icon">
+                <i class="fa-solid fa-arrow-up"></i>
+            </div>
+            <div class="card-content">
+                <h3>Monthly Expenses</h3>
+                <p class="amount">{{ summary.monthlyExpense | currency }}</p>
+            </div>
+        </div>
+
+        <div class="card summary-card savings">
+            <div class="card-icon">
+                <i class="fa-solid fa-piggy-bank"></i>
+            </div>
+            <div class="card-content">
+                <h3>Savings Rate</h3>
+                <p class="amount">{{ summary.savingsRate }}%</p>
+                <div class="progress-bar">
+                    <div class="progress" [style.width.%]="summary.savingsRate"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts & Recent Transactions -->
+    <div class="content-grid">
+        <div class="card chart-section">
+            <div class="card-header">
+                <h3>Spending Trends</h3>
+                <div class="header-actions">
+                    <select class="period-select">
+                        <option>This Week</option>
+                        <option>This Month</option>
+                        <option>This Year</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-placeholder">
+                <!-- Simulated Chart Bars -->
+                <div class="chart-bar-group">
+                    <div class="bar" style="height: 60%"></div>
+                    <span class="label">Mon</span>
+                </div>
+                <div class="chart-bar-group">
+                    <div class="bar" style="height: 80%"></div>
+                    <span class="label">Tue</span>
+                </div>
+                <div class="chart-bar-group">
+                    <div class="bar" style="height: 40%"></div>
+                    <span class="label">Wed</span>
+                </div>
+                <div class="chart-bar-group">
+                    <div class="bar active" style="height: 90%"></div>
+                    <span class="label">Thu</span>
+                </div>
+                <div class="chart-bar-group">
+                    <div class="bar" style="height: 50%"></div>
+                    <span class="label">Fri</span>
+                </div>
+                <div class="chart-bar-group">
+                    <div class="bar" style="height: 70%"></div>
+                    <span class="label">Sat</span>
+                </div>
+                <div class="chart-bar-group">
+                    <div class="bar" style="height: 45%"></div>
+                    <span class="label">Sun</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card transactions-section">
+            <div class="card-header">
+                <h3>Recent Transactions</h3>
+                <button class="btn btn-secondary btn-sm">
+                    View All <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="transaction-list">
+                <div *ngFor="let t of recentTransactions" class="transaction-item">
+                    <div class="t-icon" [class.income]="t.type === 'income'" [class.expense]="t.type === 'expense'">
+                        <i class="fa-solid" [class.fa-arrow-down]="t.type === 'income'"
+                            [class.fa-arrow-up]="t.type === 'expense'"></i>
+                    </div>
+                    <div class="t-details">
+                        <span class="t-desc">{{ t.description }}</span>
+                        <span class="t-cat">{{ t.category }}</span>
+                    </div>
+                    <div class="t-amount" [class.positive]="t.type === 'income'">
+                        {{ t.type === 'income' ? '+' : '-' }}{{ t.amount | currency }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

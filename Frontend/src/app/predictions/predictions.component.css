@@ -1,0 +1,129 @@
+.predictions-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.header-section h2 {
+    margin-bottom: var(--spacing-xs);
+}
+
+/* Highlight Card */
+.prediction-highlight {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.highlight-amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: var(--spacing-sm) 0;
+    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+}
+
+.highlight-icon {
+    font-size: 4rem;
+    opacity: 0.8;
+}
+
+.highlight-desc {
+    margin: 0;
+    max-width: 600px;
+}
+
+/* Forecast Grid */
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+}
+
+.forecast-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    transition: transform 0.2s ease;
+}
+
+.forecast-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+}
+
+.forecast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: var(--spacing-sm);
+}
+
+.month {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.year {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.forecast-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.forecast-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    border-radius: 2px;
+}
+
+.skeleton-text {
+    height: 3rem;
+    width: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}

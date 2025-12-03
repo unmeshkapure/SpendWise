@@ -1,0 +1,20 @@
+# Angular
+Frontend/node_modules
+Frontend/dist
+Frontend/.angular
+Frontend/.vscode
+Frontend/proxy.conf.json
+
+# Python
+backend/myenv
+backend/__pycache__
+backend/*.pyc
+backend/*.log
+backend/*.db
+backend/.vscode
+backend/tests/__pycache__
+
+# General
+.gemini
+.DS_Store
+.vscode

@@ -1,0 +1,57 @@
+<div class="auth-container fade-in">
+    <div class="card auth-card">
+        <div class="auth-header">
+            <h2>Create Account</h2>
+            <p>Join SpendWise and take control of your finances</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input id="full_name" type="text" formControlName="full_name" placeholder="Enter your full name"
+                    [class.error]="registerForm.get('full_name')?.touched && registerForm.get('full_name')?.invalid">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" type="email" formControlName="email" placeholder="Enter your email"
+                    [class.error]="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" type="text" formControlName="username" placeholder="Choose a username"
+                    [class.error]="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" formControlName="password" placeholder="Create a password"
+                    [class.error]="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input id="confirmPassword" type="password" formControlName="confirmPassword"
+                    placeholder="Confirm your password"
+                    [class.error]="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid">
+                <div *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched"
+                    class="error-text">
+                    Passwords do not match
+                </div>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger">
+                {{ error }}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" [disabled]="registerForm.invalid || isLoading">
+                {{ isLoading ? 'Creating Account...' : 'Sign Up' }}
+            </button>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a routerLink="/auth/login">Sign in</a></p>
+            </div>
+        </form>
+    </div>
+</div>
